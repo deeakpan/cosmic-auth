@@ -94,52 +94,87 @@ Generates a random password using the cTRNG API.
 
 ## Demo App
 
-The demo app shows how to use the package in a Next.js application. Here's how it works:
+The demo app shows how to use the package in a Next.js application. It features a beautiful signup form with automatic password generation.
 
-### Frontend (page.tsx)
-The frontend is a simple React component that:
-1. Has a button to generate passwords
-2. Shows loading state while generating
-3. Displays the generated password
-4. Sends custom options to the API:
-   ```typescript
-   // Example: Generate a 20-character password without symbols
-   body: JSON.stringify({
-     length: 20,
-     includeSymbols: false
-   })
-   ```
+### Key Features
+- Automatic password generation on first focus
+- Manual password generation with refresh button
+- Password suggestion with "Use this" option
+- Form validation and success feedback
+- Modern, responsive UI with Tailwind CSS
 
-### Backend (api/generate/route.ts)
-The API route handles password generation with these features:
-1. Defines default options:
+### Implementation
+
+The demo consists of two main files:
+
+1. Frontend ([`src/app/page.tsx`](cosmic-auth-demo/cosmic-auth-demo/src/app/page.tsx)):
+   - Signup form with name, email, DOB, gender, and password fields
+   - Password field with auto-generation on first focus
+   - Refresh icon button for manual generation
+   - Password suggestion display
+   - Form submission handling
+
+2. Backend ([`src/app/api/generate/route.ts`](cosmic-auth-demo/cosmic-auth-demo/src/app/api/generate/route.ts)):
+   - API route for password generation
+   - Default password options
+   - Error handling
+   - Response formatting
+
+### How It Works
+
+1. **First Focus Generation**:
    ```typescript
-   const DEFAULT_OPTIONS = {
-     length: 16,
-     includeUppercase: true,
-     includeLowercase: true,
-     includeNumbers: true,
-     includeSymbols: true
+   const handlePasswordFocus = () => {
+     if (!hasGenerated.current && !formData.password) {
+       generatePassword();
+     }
    };
    ```
-2. Merges user options with defaults:
+
+2. **Manual Generation**:
    ```typescript
-   const options = {
-     ...DEFAULT_OPTIONS,
-     ...body
-   };
+   <button
+     type="button"
+     onClick={generatePassword}
+     className="absolute right-2 top-1/2 -translate-y-1/2 p-1"
+   >
+     <ArrowPathIcon className={`h-5 w-5 ${loading ? 'animate-spin' : ''}`} />
+   </button>
    ```
-3. Generates password using our package
-4. Returns the password to frontend
 
-### How They Work Together
-1. User clicks "Generate Password" button
-2. Frontend sends request to API with custom options
-3. API merges options with defaults
-4. API generates password using our package
-5. Frontend displays the password
+3. **Password Suggestion**:
+   ```typescript
+   {suggestedPassword && (
+     <div className="mt-2 p-2 bg-gray-50 rounded-md">
+       <p className="text-sm text-black">Suggested password:</p>
+       <div className="flex items-center justify-between gap-2">
+         <code className="text-sm font-mono">{suggestedPassword}</code>
+         <button onClick={() => setFormData({ ...formData, password: suggestedPassword })}>
+           Use this
+         </button>
+       </div>
+     </div>
+   )}
+   ```
 
-You only need to specify options you want to change from defaults. Any options you don't specify will use the default values.
+### Running the Demo
+
+1. Clone the repository
+2. Navigate to the demo directory:
+   ```bash
+   cd cosmic-auth-demo/cosmic-auth-demo
+   ```
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
+4. Create a `.env` file with your Orbitport credentials
+5. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+The demo will be available at `http://localhost:3000`.
 
 ## License
 
