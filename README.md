@@ -92,6 +92,55 @@ Generates a random password using the cTRNG API.
 - `includeNumbers` (boolean): Include numbers (default: true)
 - `includeSpecialChars` (boolean): Include special characters (default: true)
 
+## Demo App
+
+The demo app shows how to use the package in a Next.js application. Here's how it works:
+
+### Frontend (page.tsx)
+The frontend is a simple React component that:
+1. Has a button to generate passwords
+2. Shows loading state while generating
+3. Displays the generated password
+4. Sends custom options to the API:
+   ```typescript
+   // Example: Generate a 20-character password without symbols
+   body: JSON.stringify({
+     length: 20,
+     includeSymbols: false
+   })
+   ```
+
+### Backend (api/generate/route.ts)
+The API route handles password generation with these features:
+1. Defines default options:
+   ```typescript
+   const DEFAULT_OPTIONS = {
+     length: 16,
+     includeUppercase: true,
+     includeLowercase: true,
+     includeNumbers: true,
+     includeSymbols: true
+   };
+   ```
+2. Merges user options with defaults:
+   ```typescript
+   const options = {
+     ...DEFAULT_OPTIONS,
+     ...body
+   };
+   ```
+3. Generates password using our package
+4. Returns the password to frontend
+
+### How They Work Together
+1. User clicks "Generate Password" button
+2. Frontend sends request to API with custom options
+3. API merges options with defaults
+4. API generates password using our package
+5. Frontend displays the password
+
+You only need to specify options you want to change from defaults. Any options you don't specify will use the default values.
+
 ## License
 
 MIT 
