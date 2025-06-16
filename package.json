@@ -1,0 +1,35 @@
+{
+  "name": "cosmic-auth",
+  "version": "1.0.0",
+  "description": "An npm package for generating passwords using truly random numbers from cosmic radiation via cTRNG",
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    ".env.example",
+    "next",
+    "scripts"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "node scripts/postinstall.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "auth": "^1.2.3",
+    "cosmic": "^0.0.0",
+    "dotenv": "^16.5.0",
+    "node-fetch": "^2.6.1"
+  },
+  "devDependencies": {
+    "@types/node": "^16.18.126",
+    "@types/node-fetch": "^2.6.12",
+    "typescript": "^5.8.3",
+    "next": "^14.0.0"
+  },
+  "peerDependencies": {
+    "next": ">=13.0.0"
+  }
+}
